@@ -140,7 +140,6 @@ class ArticleCrawler(object):
                     tag_hour=document_content.find('span','t11')
                     current_day=int(curtime)
                     docu_time=tag_hour.text
-                    print(docu_time)
                     docu_after=str(docu_time[12:14])
                     docu_hour=int(docu_time[15:17])
                     docu_day=int(docu_time[8:10])

@@ -32,13 +32,11 @@ class Writer(object):
 
     def initialize_file(self):
         if self.user_operating_system == "Windows":
-            self.file = open('Article_' + self.category_name + '_' + str(self.save_start_year) + self.save_start_month
-                             + '_' + str(self.save_end_year) + self.save_end_month + '.csv', 'w', encoding='euc-kr',
+            self.file = open('Article_' + self.category_name +'.csv', 'w', encoding='euc-kr',
                              newline='')
         # Other OS uses utf-8
         else:
-            self.file = open('Article_' + self.category_name + '_' + str(self.save_start_year) + self.save_start_month
-                             + '_' + str(self.save_end_year) + self.save_end_month + '.csv', 'w', encoding='utf-8',
+            self.file = open('Article_' + self.category_name + '.csv', 'w', encoding='utf-8',
                              newline='')
 
     def get_writer_csv(self):
