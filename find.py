@@ -15,10 +15,6 @@ for line in lines:
 
 fd.close()
 
-fd=open("stock.txt","r",encoding="euc-kr")
-print(fd.readlines())
-fd.close()
-
 def makeWordCloud(font_path,data,filename):
     wordcloud=WordCloud(
             font_path=font_path,
@@ -34,10 +30,27 @@ def makeWordCloud(font_path,data,filename):
     fig.savefig(filename)
 
 
-def politics(stop,font_path):
+def keyword(category,stop,font_path):
+    fd=open("/root/workspace/bigdata/stock/"+category+".txt","r",encoding="euc-kr")
+    lines=fd.readlines()
+    fd.close()
+    stock=dict()
+    for i in lines:
+        if len(lines)==0:
+            break
+        spl=i.split(',')
+        li=[]
+        for k in range(1,len(spl)):
+            li.append(spl[k])
+
+        stock[spl[0]]=li
+
+    print(stock)
+'''
+
     m=Mecab()
     tags=""
-    df=pd.read_csv("Article_정치.csv",header=None,names=['1','2','3','4','desc','6']);
+    df=pd.read_csv("Article_"+category+".csv",header=None,names=['1','2','3','4','desc','6']);
     desc=df['desc'][0]
     nouns=m.nouns(desc)
     count=Counter(nouns)
@@ -48,9 +61,9 @@ def politics(stop,font_path):
                 continue
             tags=tags+n+" "
     makeWordCloud(font_path,tags,"politics.png")
+'''
 
 
 
-
-#politics(stop,font_path)
+keyword("정치",stop,font_path)
     
