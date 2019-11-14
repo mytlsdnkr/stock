@@ -42,11 +42,8 @@ def keyword(category,stop,font_path):
         li=[]
         for k in range(1,len(spl)):
             li.append(spl[k])
-
         stock[spl[0]]=li
 
-    print(stock)
-'''
 
     m=Mecab()
     tags=""
@@ -54,16 +51,44 @@ def keyword(category,stop,font_path):
     desc=df['desc'][0]
     nouns=m.nouns(desc)
     count=Counter(nouns)
-
-    for n,c in count.most_common(100):
+    for n,c in count.most_common(1000):
         if len(n)>=2 and len(n)<=49:
             if n in stop:
                 continue
             tags=tags+n+" "
+    print(tags)
+'''
+    for n,c in count.most_common(100):
+        if len(n)>=2 and len(n)<=49:
+            if n in stop:
+                continue
+            if n in stock:
+                tags=tags+' '.join(stock[n])
+            else:
+                print(stock[n]+"에 대한 데이터가 없습니다.")
+                temp=input("추가하시겠습니까?(Y or N)")
+                if temp=='Y':
+                    print("END 입력시 끝")
+                    li=[]
+                    li.append(stock[n])
+                    while True:
+                        a=input()
+                        if a=="END":
+                            break
+                        li.append(a)
+                    fd=open("/root/workspace/bigdata/stock/"+category+".txt","a",encoding="euc-kr")
+                    wr=csv.writer(fd)
+                    wr.writerrow(li)
+                    fd.close()
+
     makeWordCloud(font_path,tags,"politics.png")
 '''
 
-
-
 keyword("정치",stop,font_path)
+keyword("IT과학",stop,font_path)
+keyword("경제",stop,font_path)
+keyword("사회",stop,font_path)
+keyword("생활문화",stop,font_path)
+keyword("오피니언",stop,font_path)
+keyword("세계",stop,font_path)
     

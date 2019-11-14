@@ -92,6 +92,7 @@ class ArticleCrawler(object):
         raise ResponseTimeout()
 
     def crawling(self, category_name):
+        curtime=time.strftime('%d',time.localtime(time.time()))
         # Multi Process PID
         print(category_name + " PID: " + str(os.getpid()))    
 
@@ -106,7 +107,6 @@ class ArticleCrawler(object):
         print("The crawler starts")
 
         for URL in day_urls:
-            curtime=time.strftime('%d',time.localtime(time.time()))
             regex = re.compile("date=(\d+)")
             news_date = regex.findall(URL)[0]
 
@@ -143,10 +143,9 @@ class ArticleCrawler(object):
                     docu_after=str(docu_time[12:14])
                     docu_hour=int(docu_time[15:17])
                     docu_day=int(docu_time[8:10])
-
                     if docu_day+1==current_day:
                         if docu_after=="오후":
-                            if docu_hour<3:
+                            if docu_hour<3 or docu_hour==12:
                                     continue
                         else:
                             continue
