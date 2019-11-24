@@ -13,6 +13,7 @@ import calendar
 import requests
 import re
 import time
+import datetime
 
 
 class ArticleCrawler(object):
@@ -93,6 +94,7 @@ class ArticleCrawler(object):
 
     def crawling(self, category_name):
         curtime=time.strftime('%d',time.localtime(time.time()))
+        current_day=int(curtime)
         # Multi Process PID
         print(category_name + " PID: " + str(os.getpid()))    
 
@@ -137,19 +139,20 @@ class ArticleCrawler(object):
                     continue
 
                 try:
-                    tag_hour=document_content.find('span','t11')
-                    current_day=int(curtime)
-                    docu_time=tag_hour.text
-                    docu_after=str(docu_time[12:14])
-                    docu_hour=int(docu_time[15:17])
-                    docu_day=int(docu_time[8:10])
-                    if docu_day+1==current_day:
-                        if docu_after=="오후":
-                            if docu_hour<3 or docu_hour==12:
-                                    continue
-                        else:
+                    docu_time=document_content.find('span','t11')
+                    docu_Str=str(docu_time.get_text())
+                    spl=docu_Str.split(' ')
+                    getDay=datetime.datetime.strptime(spl[0],'%Y.%m.%d.')
+                    getHour=datetime.datetime.strptime(spl[2],'%I:%M')
+                    docu_hour=int(getHour.strftime('%I'))
+                    docu_day=int(getDay.strftime('%d'))
+                    if current_day-1==docu_day:
+                        if spl[1]=="오전":
                             continue
-                    
+                        else:
+                            if docu_hour<3 or docu_hour==12:
+                                continue
+
                     # 기사 제목 가져옴
                     tag_headline = document_content.find_all('h3', {'id': 'articleTitle'}, {'class': 'tts_head'})
                     text_headline = ''  # 뉴스 기사 제목 초기화
