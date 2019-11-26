@@ -51,7 +51,7 @@ def keyword(category,stop,font_path,stock):
                             print("이미 존재합니다.")
                             continue
                         li.append(a)
-                    fd=open("/root/workspace/bigdata/stock/stock.txt","a",encoding="euc-kr")
+                    fd=open("/root/workspace/stock/stock/stock.txt","a",encoding="euc-kr")
                     wr=csv.writer(fd)
                     wr.writerow(li)
                     del li[0]
@@ -63,6 +63,8 @@ def keyword(category,stop,font_path,stock):
                     continue
                 else:
                     addedStop=addedStop+n+"\n"
+					stop.append(n)
+					
 
 
 
@@ -70,7 +72,7 @@ if __name__ == "__main__":
 
 
     #font 경로 설정
-    font_path="/usr/share/fonts/truetype/nanum/NanumGothic.ttf"
+    font_path="/usr/share/fonts/nanum/nanum.ttf"
 
     #불용어 stop 리스트에 저장
     stop=[]
@@ -84,7 +86,7 @@ if __name__ == "__main__":
     addedStop=""
 
     #현재 있는 관련주 stock 딕셔너리에 추가
-    fd=open("/root/workspace/bigdata/stock/stock.txt","r",encoding="euc-kr")
+    fd=open("/root/workspace/stock/stock/stock.txt","r",encoding="euc-kr")
     lines=fd.readlines()
     fd.close()
     stock=dict()
@@ -109,4 +111,4 @@ if __name__ == "__main__":
     fd=open("stopwords.txt","at")
     fd.write(addedStop)
     fd.close()
-    makeWordCloud(font_path,tags,"/root/workspace/bigdata/keyword.png")
+    makeWordCloud(font_path,tags,"/root/workspace/stock/keyword.png")
